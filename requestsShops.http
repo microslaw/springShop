@@ -1,0 +1,32 @@
+### Get all shops
+GET http://localhost:8080/api/shops
+
+
+### Get shop by name
+GET http://localhost:8080/api/shops/xcom
+
+### Get shop by name, but should return 404
+GET http://localhost:8080/api/shops/xcom2
+
+
+### Put shop
+PUT http://localhost:8080/api/shops/xcom2
+Content-Type: application/json
+
+{
+    "location": "sopot",
+    "foundingYear": 1999
+}
+
+### Patch shop
+PATCH http://localhost:8080/api/shops/xcom
+Content-Type: application/json
+
+{
+    "foundingYear": 2000
+}
+
+
+### Delete shop
+DELETE http://localhost:8080/api/shops/xcom2
+

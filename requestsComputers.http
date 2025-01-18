@@ -1,0 +1,39 @@
+### Get all computers
+GET http://localhost:8080/api/computers
+
+
+### Get computers from a specific shop
+GET http://localhost:8080/api/shops/xcom/computer_list
+
+### Get computer by name
+GET http://localhost:8080/api/shops/xcom/computer_list/latitude_7390
+
+### Get computer by name, but should return 404
+GET http://localhost:8080/api/shops/xcom/computer_list/latitude_7391
+
+
+### Create computer
+PUT http://localhost:8080/api/shops/xcom/computer_list/latitude_7400
+Content-Type: application/json
+
+{
+    "producer": "dell",
+    "memory": 16,
+    "mac_number": "7a:8b:7c:6d:5e:4a"
+}
+
+### get created computer
+GET http://localhost:8080/api/shops/xcom/computer_list/latitude_7400
+
+
+### Patch computer
+PATCH  http://localhost:8080/api/shops/xcom/computer_list/latitude_7390
+Content-Type: application/json
+
+{
+    "memory": 20
+}
+
+### Delete computer
+DELETE http://localhost:8080/api/shops/xcom/computer_list/latitude_7390
+

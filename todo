@@ -1,0 +1,25 @@
+    make requests.http rest-compliant
+    separate Dto for multiple shops
+    separate Dto for single shop
+    separate Dto for single computer
+    separate Dto for multiple computers
+fix mac modification
+fix listDto
+    fix http codes - fetch from empty and fetch from nonexistnig
+
+shop controller
+    - create
+    - update
+    - delete - should remove all associated computers
+    - read
+    - multiple read
+
+computer controller
+    - create - add shop association
+    - update
+    - delete
+    - read
+    - multiple read
+    - specific shop read
+
+    split of repeating fragments

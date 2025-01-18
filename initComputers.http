@@ -1,0 +1,49 @@
+### Create computer 1
+PUT http://localhost:8080/api/shops/xcom/computer_list/latitude_7390
+Content-Type: application/json
+
+{
+    "producer": "dell",
+    "memory": 8,
+    "mac_number": "9a:8b:7c:6d:5e:4f"
+}
+
+### Create computer 2
+PUT http://localhost:8080/api/shops/xcom/computer_list/thinkpad_L380
+Content-Type: application/json
+
+{
+    "producer": "lenovo",
+    "memory": 16,
+    "mac_number": "8a:8b:7c:6d:5e:4f"
+}
+
+### Create computer 3
+PUT http://localhost:8080/api/shops/xcom/computer_list/thinkpad_L390
+Content-Type: application/json
+
+{
+    "producer": "lenovo",
+    "memory": 32,
+    "mac_number": "7a:8b:7c:6d:5e:4f"
+}
+
+### Create computer 4
+PUT http://localhost:8080/api/shops/mediaExpert/computer_list/aspire_5
+Content-Type: application/json
+
+{
+    "producer": "acer",
+    "memory": 16,
+    "mac_number": "6a:8b:7c:6d:5e:4f"
+}
+
+### Create computer 5
+PUT http://localhost:8080/api/shops/mediaExpert/computer_list/pavilion
+Content-Type: application/json
+
+{
+    "producer": "hp",
+    "memory": 8,
+    "mac_number": "5a:8b:7c:6d:5e:4f"
+}
