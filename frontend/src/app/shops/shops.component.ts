@@ -24,18 +24,38 @@ import { FormsModule } from '@angular/forms';
       </ol>
       <div *ngIf="isEditing">
         <h3>Edit Shop</h3>
-        <form (ngSubmit)="saveShop()">
+        <form (ngSubmit)="updateShop()">
           <label for="shopName">Name:</label>
           <input id="shopName" [(ngModel)]="currentShop.name" name="shopName" required>
           <br>
-          <label for="shopName">Location:</label>
+          <label for="shopLocation">Location:</label>
           <input id="shopLocation" [(ngModel)]="currentShop.location" name="shopLocation" required>
           <br>
-          <label for="shopName">FoundingYear:</label>
+          <label for="shopFoundingYear">Founding Year:</label>
           <input id="shopFoundingYear" [(ngModel)]="currentShop.foundingYear" name="shopFoundingYear" required>
           <br>
           <button type="submit">Save</button>
           <button type="button" (click)="cancelEdit()">Cancel</button>
+        </form>
+      </div>
+      <button (click)="toggleAddShopForm()">Add New Shop</button>
+      <div *ngIf="isAddingShop">
+        <h3>Add New Shop</h3>
+        <form (ngSubmit)="addShop()">
+
+
+          <label for="shopName">Name:</label>
+          <input id="shopName" [(ngModel)]="newShop.name" name="shopName" required>
+          <br>
+          <label for="shopLocation">Location:</label>
+          <input id="shopLocation" [(ngModel)]="newShop.location" name="shopLocation" required>
+          <br>
+          <label for="shopFoundingYear">Founding Year:</label>
+          <input id="shopFoundingYear" [(ngModel)]="newShop.foundingYear" name="shopFoundingYear" required>
+          <br>
+
+          <button type="submit">Add</button>
+          <button type="button" (click)="cancelAddShop()">Cancel</button>
         </form>
       </div>
     </section>
@@ -46,7 +66,9 @@ import { FormsModule } from '@angular/forms';
 export class ShopsComponent implements OnInit {
   shops: String[] = [];
   isEditing: boolean = false;
+  isAddingShop: boolean = false;
   currentShop: Shop = { name: "", location: "", foundingYear: 0 };
+  newShop: Shop = { name: "", location: "", foundingYear: 0 };
 
   constructor(private http: HttpClient) { }
 
@@ -64,7 +86,7 @@ export class ShopsComponent implements OnInit {
     });
   }
 
-  saveShop(): void {
+  updateShop(): void {
     this.isEditing = false;
     this.http.patch(`http://localhost:8080/api/shops/${this.currentShop.name}`, this.currentShop).subscribe(() => {
     });
@@ -78,5 +100,23 @@ export class ShopsComponent implements OnInit {
     this.http.delete(`http://localhost:8080/api/shops/${this.shops[index]}`).subscribe(() => {
       this.shops.splice(index, 1);
     });
+  }
+
+  toggleAddShopForm(): void {
+    this.isAddingShop = !this.isAddingShop;
+  }
+
+  addShop(): void {
+    this.isAddingShop = false;
+    var index = this.shops.length;
+    this.http.put(`http://localhost:8080/api/shops/${this.newShop.name}`, this.newShop).subscribe(() => {
+      this.shops.push(this.newShop.name);
+      this.newShop.name = "";
+    });
+
+  }
+
+  cancelAddShop(): void {
+    this.isAddingShop = false;
   }
 }
