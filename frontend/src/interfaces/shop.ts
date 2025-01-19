@@ -1,25 +1,27 @@
 // To parse this data:
 //
-//   import { Convert, Shops } from "./file";
+//   import { Convert, Shop } from "./file";
 //
-//   const shops = Convert.toShops(json);
+//   const shop = Convert.toShop(json);
 //
 // These functions will throw an error if the JSON doesn't
 // match the expected interface, even if the JSON is valid.
 
-export interface Shops {
-    shopNames: string[];
+export interface Shop {
+    name:         string;
+    location:     string;
+    foundingYear: number;
 }
 
 // Converts JSON strings to/from your types
 // and asserts the results of JSON.parse at runtime
-export class ConvertShops {
-    public static fromJson(json: string): Shops {
-        return cast(JSON.parse(json), r("Shops"));
+export class ConvertShop {
+    public static fromJson(json: string): Shop {
+        return cast(JSON.parse(json), r("Shop"));
     }
 
-    public static toJson(value: Shops): string {
-        return JSON.stringify(uncast(value, r("Shops")), null, 2);
+    public static toJson(value: Shop): string {
+        return JSON.stringify(uncast(value, r("Shop")), null, 2);
     }
 }
 
@@ -176,7 +178,9 @@ function r(name: string) {
 }
 
 const typeMap: any = {
-    "Shops": o([
-        { json: "shopNames", js: "shopNames", typ: a("") },
+    "Shop": o([
+        { json: "name", js: "name", typ: "" },
+        { json: "location", js: "location", typ: "" },
+        { json: "foundingYear", js: "foundingYear", typ: 0 },
     ], false),
 };

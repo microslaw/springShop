@@ -47,3 +47,22 @@ Content-Type: application/json
     "memory": 8,
     "mac_number": "5a:8b:7c:6d:5e:4f"
 }
+
+
+### Put shop
+PUT http://localhost:8080/api/shops/xcom
+Content-Type: application/json
+
+{
+    "location": "gdansk",
+    "foundingYear": 1999
+}
+
+### Put shop
+PUT http://localhost:8080/api/shops/mediaExpert
+Content-Type: application/json
+
+{
+    "location": "gdynia",
+    "foundingYear": 1999
+}
