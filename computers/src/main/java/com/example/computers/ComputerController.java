@@ -10,7 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Optional;
 
 @RestController
-//@CrossOrigin
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api")
 public class ComputerController {
     private final ComputerService computerService;
