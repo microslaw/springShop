@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ConvertDetailedShop, DetailedShop } from '../../interfaces/detailed-shop';
 import { Convert, Computer } from '../../interfaces/computer';
+import { ComputerComponent } from '../computer/computer.component';
 
 @Component({
   imports: [CommonModule, FormsModule],
@@ -21,6 +22,7 @@ import { Convert, Computer } from '../../interfaces/computer';
           {{ computer }}
           <button (click)="editComputer(i)">Edit</button>
           <button (click)="deleteComputer(i)">Delete</button>
+          <button (click)="viewDetails(i)">Details</button>
         </li>
       </ul>
       <div *ngIf="isEditingComputer">
@@ -63,16 +65,20 @@ import { Convert, Computer } from '../../interfaces/computer';
         </form>
       </div>
     </div>
+    <app-detailed-shop *ngIf="showDetails" [computer]="currentComputer" (close)="closeDetails()"></app-detailed-shop>
+    <button *ngIf="showDetails" (click)="closeDetails()">Close</button>
   `,
   styleUrls: ['./detailed-shop.component.css']
 })
 export class DetailedShopComponent implements OnInit {
   @Input() shop: Shop = { name: "", location: "", foundingYear: 0 };
+  @Input() computer: Computer = { producer: "", model: "", memory: 0, mac_number: "" };
   computerList: String[] = [];
   isEditingComputer: boolean = false;
   isAddingComputer: boolean = false;
   currentComputer: Computer = { producer: "", model: "", memory: 0, mac_number: "" };
   newComputer: Computer = { producer: "", model: "", memory: 0, mac_number: "" };
+  showDetails: boolean = false;
   currentComputerIndex: number = -1;
 
   constructor(private http: HttpClient) { }
@@ -131,5 +137,28 @@ export class DetailedShopComponent implements OnInit {
 
   cancelAddComputer(): void {
     this.isAddingComputer = false;
+  }
+  closeDetails(): void {
+    this.showDetails = false;
+  }
+
+
+  viewDetails(computerIndex: number): void {
+    console.log(this.shop);
+    // this.http.get<Computer>(`http://localhost:8080/api/shops/${this.shop.name}/computer_list/${this.computerList[computerIndex]}`).subscribe(shop => {
+    //   this.currentComputer = shop;
+    // });
+
+    console.log(computerIndex)
+
+
+
+    let url = `http://localhost:8080/api/shops/${this.shop.name}/computer_list/${this.computerList[computerIndex]}`;
+    console.log(url);
+    this.http.get<any>(url).subscribe(data => {
+      this.currentComputer = Convert.fromJson(JSON.stringify(data));
+      this.currentComputerIndex = computerIndex;
+      this.showDetails = true;
+    });
   }
 }
