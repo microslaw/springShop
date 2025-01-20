@@ -8,7 +8,7 @@ import { Convert, Computer } from '../../interfaces/computer';
 import { ComputerComponent } from '../computer/computer.component';
 
 @Component({
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ComputerComponent],
   selector: 'app-detailed-shop',
   template: `
     <div>
@@ -22,7 +22,7 @@ import { ComputerComponent } from '../computer/computer.component';
           {{ computer }}
           <button (click)="editComputer(i)">Edit</button>
           <button (click)="deleteComputer(i)">Delete</button>
-          <button (click)="viewDetails(i)">Details</button>
+          <button (click)="viewComputerDetails(i)">Details</button>
         </li>
       </ul>
       <div *ngIf="isEditingComputer">
@@ -65,15 +65,14 @@ import { ComputerComponent } from '../computer/computer.component';
         </form>
       </div>
     </div>
-    <app-detailed-shop *ngIf="showDetails" [computer]="currentComputer" (close)="closeDetails()"></app-detailed-shop>
+    <app-computer *ngIf="showDetails" [computer]="currentComputer" (close)="closeDetails()"></app-computer>
     <button *ngIf="showDetails" (click)="closeDetails()">Close</button>
   `,
   styleUrls: ['./detailed-shop.component.css']
 })
 export class DetailedShopComponent implements OnInit {
   @Input() shop: Shop = { name: "", location: "", foundingYear: 0 };
-  @Input() computer: Computer = { producer: "", model: "", memory: 0, mac_number: "" };
-  computerList: String[] = [];
+  computerList: string[] = [];
   isEditingComputer: boolean = false;
   isAddingComputer: boolean = false;
   currentComputer: Computer = { producer: "", model: "", memory: 0, mac_number: "" };
@@ -88,18 +87,28 @@ export class DetailedShopComponent implements OnInit {
   }
 
   getComputerList(): void {
+    console.log(this.shop);
     this.http.get<any>(`http://localhost:8080/api/shops/${this.shop.name}/computer_list`).subscribe(data => {
       const computers = ConvertDetailedShop.fromJson(JSON.stringify(data));
       this.computerList = computers.computers;
     });
   }
 
-  editComputer(computerIndex: number): void {
-    this.http.get<any>(`http://localhost:8080/api/shops/${this.shop.name}/computer_list/${this.computerList[computerIndex]}`).subscribe(data => {
-      this.currentComputer = Convert.fromJson(JSON.stringify(data));
-      this.currentComputerIndex = computerIndex;
-      this.isEditingComputer = true;
+  requestComputer(shop_name:string, computer_name:string): Computer {
+    let computer: Computer = { producer: "", model: "", memory: 0, mac_number: "" };
+
+    this.http.get<any>(`http://localhost:8080/api/shops/${shop_name}/computer_list/${computer_name}`).subscribe(data => {
+      computer = Convert.fromJson(JSON.stringify(data))
     });
+
+    console.log(computer);
+    return computer;
+  }
+
+  editComputer(computerIndex: number): void {
+    this.currentComputer = this.requestComputer(this.shop.name, this.computerList[computerIndex]);
+    this.currentComputerIndex = computerIndex;
+    this.isEditingComputer = true;
   }
 
   updateComputer(): void {
@@ -143,7 +152,7 @@ export class DetailedShopComponent implements OnInit {
   }
 
 
-  viewDetails(computerIndex: number): void {
+  viewComputerDetails(computerIndex: number): void {
     console.log(this.shop);
     // this.http.get<Computer>(`http://localhost:8080/api/shops/${this.shop.name}/computer_list/${this.computerList[computerIndex]}`).subscribe(shop => {
     //   this.currentComputer = shop;
@@ -157,8 +166,8 @@ export class DetailedShopComponent implements OnInit {
     console.log(url);
     this.http.get<any>(url).subscribe(data => {
       this.currentComputer = Convert.fromJson(JSON.stringify(data));
-      this.currentComputerIndex = computerIndex;
-      this.showDetails = true;
     });
+    this.currentComputerIndex = computerIndex;
+    this.showDetails = true;
   }
 }

@@ -46,18 +46,18 @@ public class ComputerShopGatewayApplication {
                 .build();
     }
 
-//     @Bean
-//     public CorsWebFilter corsWebFilter() {
+    @Bean
+    public CorsWebFilter corsWebFilter() {
 
-//         final CorsConfiguration corsConfig = new CorsConfiguration();
-//         corsConfig.setAllowedOrigins(Collections.singletonList("*"));
-//         corsConfig.setMaxAge(3600L);
-//         corsConfig.setAllowedMethods(Arrays.asList("GET", "POST", "DELETE", "PUT"));
-//         corsConfig.addAllowedHeader("*");
+        final CorsConfiguration corsConfig = new CorsConfiguration();
+        corsConfig.setAllowedOrigins(Collections.singletonList("*"));
+        corsConfig.setMaxAge(3600L);
+        corsConfig.setAllowedMethods(Arrays.asList("GET", "POST", "DELETE", "PUT"));
+        corsConfig.addAllowedHeader("*");
 
-//         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//         source.registerCorsConfiguration("/**", corsConfig);
+        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", corsConfig);
 
-//         return new CorsWebFilter(source);
-//     }
+        return new CorsWebFilter(source);
+    }
 }
