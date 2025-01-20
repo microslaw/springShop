@@ -38,9 +38,28 @@ import { Convert, Computer } from '../../interfaces/computer';
           <label for="computerMacNumber">Mac Number:</label>
           <input id="computerMacNumber" [(ngModel)]="currentComputer.mac_number" name="computerMacNumber" required>
           <br>
-
           <button type="submit">Save</button>
           <button type="button" (click)="cancelEditComputer()">Cancel</button>
+        </form>
+      </div>
+      <button (click)="toggleAddComputerForm()">Add New Computer</button>
+      <div *ngIf="isAddingComputer">
+        <h3>Add New Computer</h3>
+        <form (ngSubmit)="addComputer()">
+          <label for="newComputerName">Name:</label>
+          <input id="newComputerName" [(ngModel)]="newComputer.model" name="newComputerName" required>
+          <br>
+          <label for="newComputerProducer">Producer:</label>
+          <input id="newComputerProducer" [(ngModel)]="newComputer.producer" name="newComputerProducer" required>
+          <br>
+          <label for="newComputerMemory">Memory:</label>
+          <input id="newComputerMemory" [(ngModel)]="newComputer.memory" name="newComputerMemory" required>
+          <br>
+          <label for="newComputerMacNumber">Mac Number:</label>
+          <input id="newComputerMacNumber" [(ngModel)]="newComputer.mac_number" name="newComputerMacNumber" required>
+          <br>
+          <button type="submit">Add</button>
+          <button type="button" (click)="cancelAddComputer()">Cancel</button>
         </form>
       </div>
     </div>
@@ -51,7 +70,9 @@ export class DetailedShopComponent implements OnInit {
   @Input() shop: Shop = { name: "", location: "", foundingYear: 0 };
   computerList: String[] = [];
   isEditingComputer: boolean = false;
+  isAddingComputer: boolean = false;
   currentComputer: Computer = { producer: "", model: "", memory: 0, mac_number: "" };
+  newComputer: Computer = { producer: "", model: "", memory: 0, mac_number: "" };
   currentComputerIndex: number = -1;
 
   constructor(private http: HttpClient) { }
@@ -69,13 +90,10 @@ export class DetailedShopComponent implements OnInit {
 
   editComputer(computerIndex: number): void {
     this.http.get<any>(`http://localhost:8080/api/shops/${this.shop.name}/computer_list/${this.computerList[computerIndex]}`).subscribe(data => {
-
       this.currentComputer = Convert.fromJson(JSON.stringify(data));
       this.currentComputerIndex = computerIndex;
       this.isEditingComputer = true;
     });
-    console.log(this.currentComputer);
-    console.log(computerIndex);
   }
 
   updateComputer(): void {
@@ -97,5 +115,21 @@ export class DetailedShopComponent implements OnInit {
     this.http.delete(`http://localhost:8080/api/shops/${this.shop.name}/computer_list/${this.computerList[index]}`).subscribe(() => {
       this.computerList.splice(index, 1);
     });
+  }
+
+  toggleAddComputerForm(): void {
+    this.isAddingComputer = !this.isAddingComputer;
+  }
+
+  addComputer(): void {
+    this.isAddingComputer = false;
+    this.http.put(`http://localhost:8080/api/shops/${this.shop.name}/computer_list/${this.newComputer.model}`, this.newComputer).subscribe(() => {
+      this.computerList.push(this.newComputer.model);
+      this.newComputer = { producer: "", model: "", memory: 0, mac_number: "" };
+    });
+  }
+
+  cancelAddComputer(): void {
+    this.isAddingComputer = false;
   }
 }
