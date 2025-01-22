@@ -60,6 +60,7 @@ import { DetailedShopComponent } from '../detailed-shop/detailed-shop.component'
     </section>
   </main>
   <app-detailed-shop *ngIf="showDetails" [shop]="currentShop" (close)="closeDetails()"></app-detailed-shop>
+  <br>
   <button *ngIf="showDetails" (click)="closeDetails()">Close</button>
   `,
   styleUrls: ['./shops.component.css']
