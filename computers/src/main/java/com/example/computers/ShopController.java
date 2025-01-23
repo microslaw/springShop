@@ -107,7 +107,6 @@ public class ShopController {
     }
 
 
-
     @DeleteMapping("/shops/{name}/computer_list/{model}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void deleteComputer(
@@ -128,7 +127,13 @@ public class ShopController {
     public void putShop(
             @PathVariable String name,
             @RequestBody PutShopRequest putShopRequest) {
-        this.tryAddShop(name, putShopRequest);
+
+
+        Optional<Shop> fetchedShop = this.shopService.findByName(name);
+        if (fetchedShop.isEmpty()) {
+            this.tryAddShop(name, putShopRequest);
+        }
+
     }
 
     @PatchMapping("/shops/{name}")
