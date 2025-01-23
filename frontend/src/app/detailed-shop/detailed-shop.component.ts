@@ -94,21 +94,14 @@ export class DetailedShopComponent implements OnInit {
     });
   }
 
-  requestComputer(shop_name:string, computer_name:string): Computer {
-    let computer: Computer = { producer: "", model: "", memory: 0, mac_number: "" };
-
-    this.http.get<any>(`http://localhost:8080/api/shops/${shop_name}/computer_list/${computer_name}`).subscribe(data => {
-      computer = Convert.fromJson(JSON.stringify(data))
-    });
-
-    console.log(computer);
-    return computer;
-  }
 
   editComputer(computerIndex: number): void {
-    this.currentComputer = this.requestComputer(this.shop.name, this.computerList[computerIndex]);
-    this.currentComputerIndex = computerIndex;
-    this.isEditingComputer = true;
+    this.http.get<any>(`http://localhost:8080/api/shops/${this.shop.name}/computer_list/${this.computerList[computerIndex]}`).subscribe(data => {
+      this.currentComputer = Convert.fromJson(JSON.stringify(data));
+      this.currentComputerIndex = computerIndex;
+      this.isEditingComputer = true;
+      console.log(data)
+    });
   }
 
   updateComputer(): void {
