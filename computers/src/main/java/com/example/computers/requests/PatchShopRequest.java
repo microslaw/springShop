@@ -1,6 +1,7 @@
 package com.example.computers.requests;
 
 import com.example.computers.Shop;
+import lombok.Builder;
 import lombok.ToString;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,6 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @ToString
+@Builder
 public class PatchShopRequest {
     private String name;
 
