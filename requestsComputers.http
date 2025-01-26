@@ -1,4 +1,8 @@
 ### Get all computers
+GET http://localhost:8083/api/computers
+
+
+### Get all computers
 GET http://localhost:8080/api/computers
 
 

@@ -9,11 +9,28 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.reactive.CorsWebFilter;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import java.util.Arrays;
 import java.util.Collections;
 
 @SpringBootApplication
 public class ComputerShopGatewayApplication {
+
+    @Value("${gatewayName}")
+    private String hostName;
+    @Value("${gatewayPort}")
+    private String hostPort;
+
+    @Value("${shopsName}")
+    private String shopsName;
+    @Value("${shopsPort}")
+    private String shopsPort;
+
+    @Value("${computersName}")
+    private String computersName;
+    @Value("${computersPort}")
+    private String computersPort;
 
     public static void main(String[] args) {
         SpringApplication.run(ComputerShopGatewayApplication.class, args);
@@ -21,7 +38,13 @@ public class ComputerShopGatewayApplication {
 
     @Bean
     public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
-        String host = "localhost:8080";
+        String httpShopsUri = "http://" + shopsName + ":" + shopsPort;
+        String httpComputersUri = "http://" + computersName + ":" + computersPort;
+        String host = hostName + ":" + hostPort;
+
+        System.out.println("host: " + host);
+        System.out.println("shopsUri: " + httpShopsUri);
+        System.out.println("computersUri: " + httpComputersUri);
         return builder
                 .routes()
                 .route("shops", r -> r
@@ -31,7 +54,7 @@ public class ComputerShopGatewayApplication {
                                 "/api/shops",
                                 "/api/shops/{name}"
                         )
-                        .uri("http://localhost:8082")
+                        .uri(httpShopsUri)
                 )
                 .route("computers", r -> r
                         .host(host)
@@ -41,7 +64,7 @@ public class ComputerShopGatewayApplication {
                                 "/api/shops/{name}/computer_list",
                                 "/api/shops/{name}/computer_list/{model}"
                         )
-                        .uri("http://localhost:8083")
+                        .uri(httpComputersUri)
                 )
                 .build();
     }
