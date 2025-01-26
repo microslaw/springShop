@@ -6,6 +6,24 @@ services:
     restart: always
     ports:
       - "8083:8083"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/computers-postgres
+      - SPRING_DATASOURCE_USERNAME=computers-postgres
+      - SPRING_DATASOURCE_PASSWORD=computers-postgres
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+
+  computers-db:
+    image: postgres:17
+    container_name: computers-db
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=computers-postgres
+      - POSTGRES_PASSWORD=computers-postgres
+      - POSTGRES_DB=computers-postgres
+      - POSTGRES_URI=computers-db
+      - POSTGRES_PORT=5432
 
 
   frontend:
@@ -41,9 +59,10 @@ services:
     environment:
       - COMPUTERS_URI=computers-container
       - COMPUTERS_PORT=8083
+    depends_on:
+      - computers
 
-networks:
-  default:
-    external:
-      name: computerShop
+# networks:
+#   default:
+#     name: computerShop
 
