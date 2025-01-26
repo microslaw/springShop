@@ -6,6 +6,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class CommandLine implements CommandLineRunner {
@@ -28,6 +29,13 @@ public class CommandLine implements CommandLineRunner {
         String command;
         main_loop:
         while (true) {
+                        try {
+                command = scanner.nextLine();
+            } catch (NoSuchElementException e) {
+                TimeUnit.SECONDS.sleep(1);
+                continue;
+            }
+
             System.out.print("s>");
             command = scanner.nextLine();
             switch (command) {
