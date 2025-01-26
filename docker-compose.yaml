@@ -1,0 +1,49 @@
+services:
+
+  computers:
+    image: computers-image
+    container_name: computers-container
+    restart: always
+    ports:
+      - "8083:8083"
+
+
+  frontend:
+    image: frontend-image
+    container_name: frontend-container
+    restart: always
+    ports:
+      - "4200:4200"
+    environment:
+      - GATEWAY_URI=gateway-container
+      - GATEWAY_PORT=8080
+      - FRONTEND_PORT=4200
+      - FRONTEND_URI=frontend-container
+
+  gateway:
+    image: gateway-image
+    container_name: gateway-container
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      - COMPUTERS_URI=computers-container
+      - COMPUTERS_PORT=8083
+      - SHOPS_URI=shops-container
+      - SHOPS_PORT=8082
+
+  shops:
+    image: shops-image
+    container_name: shops-container
+    restart: always
+    ports:
+      - "8082:8082"
+    environment:
+      - COMPUTERS_URI=computers-container
+      - COMPUTERS_PORT=8083
+
+networks:
+  default:
+    external:
+      name: computerShop
+
