@@ -38,7 +38,6 @@ public class CommandLine implements CommandLineRunner {
         main_loop:
         while (true) {
             System.out.print("c>");
-            TimeUnit.SECONDS.sleep(1);
             try {
                 command = scanner.nextLine();
             } catch (NoSuchElementException e) {

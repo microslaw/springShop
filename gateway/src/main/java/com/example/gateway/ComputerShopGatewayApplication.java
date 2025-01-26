@@ -40,7 +40,7 @@ public class ComputerShopGatewayApplication {
     public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
         String httpShopsUri = "http://" + shopsName + ":" + shopsPort;
         String httpComputersUri = "http://" + computersName + ":" + computersPort;
-        String host = hostName + ":" + hostPort;
+        String host = "localhost" + ":" + hostPort;
 
         System.out.println("host: " + host);
         System.out.println("shopsUri: " + httpShopsUri);
