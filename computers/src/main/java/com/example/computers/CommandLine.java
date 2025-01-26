@@ -4,7 +4,7 @@ package com.example.computers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-
+import java.util.concurrent.TimeUnit;
 import java.util.*;
 
 @Component
@@ -38,7 +38,13 @@ public class CommandLine implements CommandLineRunner {
         main_loop:
         while (true) {
             System.out.print("c>");
-            command = scanner.nextLine();
+            TimeUnit.SECONDS.sleep(1);
+            try {
+                command = scanner.nextLine();
+            } catch (NoSuchElementException e) {
+                TimeUnit.SECONDS.sleep(1);
+                continue;
+            }
             switch (command) {
                 case "ls computers" -> {
                     ls_computers();
