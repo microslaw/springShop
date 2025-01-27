@@ -1,7 +1,7 @@
 services:
 
   computers:
-    image: computers-image
+    build: ./computers
     container_name: computers-container
     restart: always
     ports:
@@ -9,7 +9,7 @@ services:
 
 
   frontend:
-    image: frontend-image
+    build: ./frontend
     container_name: frontend-container
     restart: always
     ports:
@@ -21,7 +21,7 @@ services:
       - FRONTEND_URI=frontend-container
 
   gateway:
-    image: gateway-image
+    build: ./gateway
     container_name: gateway-container
     restart: always
     ports:
@@ -33,7 +33,7 @@ services:
       - SHOPS_PORT=8082
 
   shops:
-    image: shops-image
+    build: ./shops
     container_name: shops-container
     restart: always
     ports:
@@ -44,6 +44,5 @@ services:
 
 networks:
   default:
-    external:
-      name: computerShop
+    name: computerShop
 
